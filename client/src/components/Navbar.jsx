@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import ThedhakaXpress from "../assets/ThedhakaXpress.png";
 
 // Styled Components
 
@@ -136,7 +137,7 @@ const Navbar = () => {
       <Nav>
         <NavContainer>
           <Logo>
-            <img src="/src/assets/ThedhakaXpress.png" alt="The Dhaka Xpress" height="40" />
+            <img src={ThedhakaXpress} alt="The Dhaka Xpress" height="40" />
           </Logo>
 
 

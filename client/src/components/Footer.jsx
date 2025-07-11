@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import ThedhakaXpress from "../assets/ThedhakaXpress.png";
 
 const FooterWrapper = styled.footer`
   background-color: #1f2937;
@@ -72,7 +73,7 @@ const Footer = () => {
         </Links>
 
         <LogoContainer>
-          <img src="/src/assets/ThedhakaXpress.png" alt="Dhaka Xpress Logo" height="40" />
+          <img src={ThedhakaXpress} alt="Dhaka Xpress Logo" height="40" />
         </LogoContainer>
 
         <Info>
