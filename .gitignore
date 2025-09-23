@@ -23,6 +23,9 @@ client/dist/
 api/dist/
 api/build/
 
+# Uploaded videos (important)
+api/uploads/videos/
+
 # System files
 .DS_Store
 Thumbs.db

@@ -87,7 +87,7 @@ const Login = () => {
       <Title>Login</Title>
       <form onSubmit={handleLogin}>
         <Input
-          type="email"
+          type="text"
           placeholder="Email"
           value={email}
           required
