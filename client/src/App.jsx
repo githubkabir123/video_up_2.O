@@ -24,7 +24,7 @@ function App() {
   return (
 
     <Routes>
-  <Route path="/dashboard" element={
+  <Route path="/" element={
     
       <>
        <PrivateRoute roles={["editor", "admin","journalist"]}>

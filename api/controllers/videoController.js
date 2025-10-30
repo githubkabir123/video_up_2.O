@@ -4,25 +4,74 @@ const fs = require("fs");
 const path = require("path");
 
 // Upload video
+// exports.uploadVideo = async (req, res) => {
+//   try {
+//     const { title } = req.body;
+//     const fileUrl = `/uploads/videos/${req.file.filename}`;
+//     const user = req.user; // Comes from auth middleware
+
+//     const newVideo = new Video({
+//   title,
+//   fileUrl,
+//   uploadedBy: user.userId,
+//   ...(user.divisionId && { divisionId: user.divisionId }),
+//   ...(user.districtId && { districtId: user.districtId }),
+//   ...(user.upazilaId && { upazilaId: user.upazilaId })
+// });
+
+//     await newVideo.save();
+//     res.status(201).json({ message: "Video uploaded", video: newVideo });
+//   } catch (err) {
+//     res.status(500).json({ message: "Upload failed", error: err.message });
+//   }
+// };
 exports.uploadVideo = async (req, res) => {
   try {
     const { title } = req.body;
-    const fileUrl = `/uploads/videos/${req.file.filename}`;
-    const user = req.user; // Comes from auth middleware
+    const user = req.user; // from auth middleware
+    const io = req.app.get("io"); // Socket.IO instance
+    const file = req.file;
 
-    const newVideo = new Video({
-  title,
-  fileUrl,
-  uploadedBy: user.userId,
-  ...(user.divisionId && { divisionId: user.divisionId }),
-  ...(user.districtId && { districtId: user.districtId }),
-  ...(user.upazilaId && { upazilaId: user.upazilaId })
-});
+    if (!file) return res.status(400).json({ message: "No file uploaded" });
+    if (!title) return res.status(400).json({ message: "Title is required" });
 
-    await newVideo.save();
-    res.status(201).json({ message: "Video uploaded", video: newVideo });
+    // Multer already saved the file at file.path
+    const filePath = file.path; // e.g. uploads/videos/12345.mp4
+    const fileSize = fs.statSync(filePath).size;
+
+    // Optional: simulate progress
+    let uploaded = 0;
+    const readStream = fs.createReadStream(filePath);
+
+    readStream.on("data", (chunk) => {
+      uploaded += chunk.length;
+      const percent = Math.round((uploaded / fileSize) * 100);
+      io.emit("uploadProgress", { percent });
+    });
+
+    readStream.on("end", async () => {
+      const newVideo = new Video({
+        title,
+        fileUrl: `/uploads/videos/${file.filename}`,
+        uploadedBy: user.userId,
+        ...(user.divisionId && { divisionId: user.divisionId }),
+        ...(user.districtId && { districtId: user.districtId }),
+        ...(user.upazilaId && { upazilaId: user.upazilaId })
+      });
+
+      await newVideo.save();
+      io.emit("uploadProgress", { percent: 100 });
+      res.status(201).json({ message: "Video uploaded", video: newVideo });
+    });
+
+    readStream.on("error", (err) => {
+      io.emit("uploadError", { error: err.message });
+      res.status(500).json({ message: "Upload failed", error: err.message });
+    });
+
   } catch (err) {
-    res.status(500).json({ message: "Upload failed", error: err.message });
+    console.error(err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 

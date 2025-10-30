@@ -143,7 +143,7 @@ const Navbar = () => {
 
           <DesktopMenu>
             <MenuItem>
-              <StyledLink to="/dashboard">Dashboard</StyledLink>
+              <StyledLink to="/">Dashboard</StyledLink>
             </MenuItem>
 
             {role === "journalist" && (
@@ -211,7 +211,7 @@ const Navbar = () => {
       {/* Mobile Menu */}
       <MobileMenu open={menuOpen}>
         <MenuItem>
-          <StyledLink to="/dashboard" onClick={handleLinkClick}>
+          <StyledLink to="/" onClick={handleLinkClick}>
             Dashboard
           </StyledLink>
         </MenuItem>

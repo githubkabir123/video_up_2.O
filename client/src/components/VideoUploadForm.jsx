@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import API from "../api/axios";
 import styled from "styled-components";
 
-
-// Styled Components
+// ================= Styled Components =================
 const FormWrapper = styled.div`
   max-width: 600px;
   margin: 3rem auto;
@@ -34,28 +33,6 @@ const Input = styled.input`
   border: 1px solid #d1d5db;
   border-radius: 10px;
   font-size: 1rem;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
-
-  &:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
-    outline: none;
-  }
-
-  &:disabled {
-    background: #f3f4f6;
-    cursor: not-allowed;
-  }
-`;
-
-const Select = styled.select`
-  width: 100%;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1.25rem;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: border 0.2s ease, box-shadow 0.2s ease;
 
   &:focus {
     border-color: #2563eb;
@@ -79,29 +56,58 @@ const Button = styled.button`
   border: none;
   border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
 
   &:hover {
     background-color: #1e40af;
-    transform: translateY(-1px);
   }
 
   &:disabled {
     background-color: #9ca3af;
     cursor: not-allowed;
-    transform: none;
   }
+`;
+
+const UploadContainer = styled.div`
+  width: 100%;
+  max-width: 400px;
+  margin: 2rem auto 0;
+  text-align: center;
+`;
+
+const ProgressBar = styled.div`
+  background: #eee;
+  border-radius: 8px;
+  margin-top: 15px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+`;
+
+const ProgressFill = styled.div`
+  background: #4caf50;
+  height: 100%;
+  width: ${(props) => props.width || 0}%;
+  transition: width 0.2s ease-in-out;
+`;
+
+const ProgressText = styled.p`
+  margin-top: 10px;
+  color: #1f2937;
+  font-weight: 500;
 `;
 
 const Loader = styled.p`
   color: #1e40af;
   font-size: 1rem;
   text-align: center;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 `;
+
+// ================= Upload Form Component =================
 const VideoUploadForm = () => {
   const [title, setTitle] = useState("");
   const [video, setVideo] = useState(null);
+  const [progress, setProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -109,15 +115,14 @@ const VideoUploadForm = () => {
   const handleUpload = async (e) => {
     e.preventDefault();
 
-    if (!video || !title) {
-      return alert("Please enter a title and select a video.");
-    }
+    if (!video || !title) return alert("Please enter a title and select a video.");
 
     const formData = new FormData();
     formData.append("title", title);
     formData.append("video", video);
 
     setIsUploading(true);
+    setProgress(0);
 
     try {
       await API.post("/videos/upload", formData, {
@@ -125,18 +130,22 @@ const VideoUploadForm = () => {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
-        withCredentials: true,
+        onUploadProgress: (event) => {
+          const percent = Math.round((event.loaded * 100) / event.total);
+          setProgress(percent);
+        },
       });
 
       alert("✅ Video uploaded successfully.");
-      setTitle("");
-      setVideo(null);
-      document.getElementById("videoInput").value = "";
     } catch (err) {
       console.error("Upload failed:", err.response?.data || err.message);
       alert("❌ Failed to upload video.");
     } finally {
       setIsUploading(false);
+      setProgress(0);
+      setTitle("");
+      setVideo(null);
+      document.getElementById("videoInput").value = "";
     }
   };
 
@@ -149,8 +158,8 @@ const VideoUploadForm = () => {
           placeholder="Video title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          required
           disabled={isUploading}
+          required
         />
 
         <Input
@@ -158,8 +167,8 @@ const VideoUploadForm = () => {
           accept="video/*"
           id="videoInput"
           onChange={(e) => setVideo(e.target.files[0])}
-          required
           disabled={isUploading}
+          required
         />
 
         <Button type="submit" disabled={isUploading}>
@@ -167,7 +176,15 @@ const VideoUploadForm = () => {
         </Button>
       </form>
 
-      {isUploading && <Loader>Uploading your video, please wait...</Loader>}
+      {isUploading && (
+        <UploadContainer>
+          <ProgressBar>
+            <ProgressFill width={progress} />
+          </ProgressBar>
+          <ProgressText>{progress.toFixed(0)}%</ProgressText>
+          <Loader>Uploading your video, please wait...</Loader>
+        </UploadContainer>
+      )}
     </FormWrapper>
   );
 };

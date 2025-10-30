@@ -3,7 +3,7 @@ function Header(){
     return(
         <>
        <nav>
-        <Link to="/">Home</Link> | <Link to="/dashbord">Dashbord</Link>
+         <Link to="/">Dashbord</Link>
       </nav>
       <br/>
         </>

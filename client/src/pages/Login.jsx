@@ -76,7 +76,7 @@ const Login = () => {
       localStorage.setItem("role", user.role);
       localStorage.setItem("districtId", user.districtId);
 
-      navigate("/dashboard");
+      navigate("/");
     } catch (err) {
       alert("Login failed: " + (err.response?.data?.message || err.message));
     }

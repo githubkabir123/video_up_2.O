@@ -66,7 +66,7 @@ const Footer = () => {
     <FooterWrapper>
       <Container>
         <Links>
-          <li><a href="/dashboard">Dashboard</a></li>
+          <li><a href="/">Dashboard</a></li>
           <li><a href="/videolist">Video List</a></li>
           <li><a href="/admin">Admin Panel</a></li>
           <li><a href="/login">Login</a></li>
