@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 import ThedhakaXpress from "../assets/ThedhakaXpress.png";
+import { useNavigate } from "react-router-dom";
 
 // Styled Components
 
@@ -15,7 +16,7 @@ const Nav = styled.nav`
 `;
 
 const NavContainer = styled.div`
-  max-width: 1280px;
+  width: 100vw;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
@@ -118,6 +119,7 @@ const Overlay = styled.div`
 `;
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const role = localStorage.getItem("role");
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -131,13 +133,17 @@ const Navbar = () => {
      setMenuOpen(false);
     navigate("/login");
   };
+  const backToHome = () => {
+    //  setMenuOpen(false);
+    navigate("/");
+  };
 
   return (
     <>
       <Nav>
         <NavContainer>
-          <Logo>
-            <img src={ThedhakaXpress} alt="The Dhaka Xpress" height="40" />
+          <Logo onClick={backToHome}>
+            <img src={ThedhakaXpress}  alt="The Dhaka Xpress" height="40" />
           </Logo>
 
 

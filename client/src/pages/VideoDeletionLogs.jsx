@@ -4,7 +4,8 @@ import API from '../api/axios';
 
 // Styled Components
 const Container = styled.div`
-  max-width: 1000px;
+  width: 100vw;
+  overFlow:scroll;
   margin: 2rem auto;
   padding: 2rem;
   background-color: #f9fafb;

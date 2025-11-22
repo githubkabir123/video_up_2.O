@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import styled from 'styled-components';
+
+// Styled Components
+const OverFlowRapper = styled.div`
+  width: 100%;
+  overFlow:scroll;
+`;
 
 const baseUrl = import.meta.env.VITE_BASEURL ;
 const API = `${baseUrl}/api`;
@@ -85,19 +92,22 @@ const AllRoute = () => {
           />
           <button className="btn btn-primary" onClick={addDivision}>Add</button>
         </div>
-        <table className="table table-bordered">
-          <thead>
-            <tr><th>Division</th><th>Action</th></tr>
-          </thead>
-          <tbody>
-            {divisions.map((d) => (
-              <tr key={d._id}>
-                <td>{d.name}</td>
-                <td><button className="btn btn-danger btn-sm" onClick={() => deleteDivision(d._id)}>Delete</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <OverFlowRapper>
+          <table className="table table-bordered">
+            <thead>
+              <tr><th>Division</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              {divisions.map((d) => (
+                <tr key={d._id}>
+                  <td>{d.name}</td>
+                  <td><button className="btn btn-danger btn-sm" onClick={() => deleteDivision(d._id)}>Delete</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </OverFlowRapper>
+        
       </div>
 
       {/* District */}
@@ -128,21 +138,24 @@ const AllRoute = () => {
             <button className="btn btn-primary w-100" onClick={addDistrict}>Add</button>
           </div>
         </div>
-
-        <table className="table table-bordered">
-          <thead>
-            <tr><th>District</th><th>Division</th><th>Action</th></tr>
-          </thead>
-          <tbody>
-            {districts.map((d) => (
-              <tr key={d._id}>
-                <td>{d.name}</td>
-                <td>{d.division?.name}</td>
-                <td><button className="btn btn-danger btn-sm" onClick={() => deleteDistrict(d._id)}>Delete</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        
+        <OverFlowRapper>
+          <table className="table table-bordered">
+            <thead>
+              <tr><th>District</th><th>Division</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              {districts.map((d) => (
+                <tr key={d._id}>
+                  <td>{d.name}</td>
+                  <td>{d.division?.name}</td>
+                  <td><button className="btn btn-danger btn-sm" onClick={() => deleteDistrict(d._id)}>Delete</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </OverFlowRapper>
+        
       </div>
 
       {/* Upazila */}
@@ -187,22 +200,25 @@ const AllRoute = () => {
             <button className="btn btn-primary w-100" onClick={addUpazila}>Add</button>
           </div>
         </div>
-
-        <table className="table table-bordered">
-          <thead>
-            <tr><th>Upazila</th><th>District</th><th>Division</th><th>Action</th></tr>
-          </thead>
-          <tbody>
-            {upazilas.map((u) => (
-              <tr key={u._id}>
-                <td>{u.name}</td>
-                <td>{u.district?.name}</td>
-                <td>{u.division?.name}</td>
-                <td><button className="btn btn-danger btn-sm" onClick={() => deleteUpazila(u._id)}>Delete</button></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        
+        <OverFlowRapper>
+          <table className="table table-bordered">
+            <thead>
+              <tr><th>Upazila</th><th>District</th><th>Division</th><th>Action</th></tr>
+            </thead>
+            <tbody>
+              {upazilas.map((u) => (
+                <tr key={u._id}>
+                  <td>{u.name}</td>
+                  <td>{u.district?.name}</td>
+                  <td>{u.division?.name}</td>
+                  <td><button className="btn btn-danger btn-sm" onClick={() => deleteUpazila(u._id)}>Delete</button></td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </OverFlowRapper>
+        
       </div>
     </div>
   );

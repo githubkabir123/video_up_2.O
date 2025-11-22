@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../api/axios";
 import AddUserForm from "../components/AddUserForm";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled from 'styled-components';
 
 // Styled Components
 const Container = styled.div`
@@ -64,6 +64,11 @@ const DeleteButton = styled.button`
     background-color: #b91c1c;
   }
 `;
+const OverFlowRapper = styled.div`
+  width: 100%;
+  overFlow:scroll;
+`;
+
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
@@ -164,47 +169,50 @@ const AdminPanel = () => {
       </div>
 
       {/* Users Table */}
-      <StyledTable>
-        <thead>
-          <tr>
-            <Th>Name</Th>
-            <Th>Email</Th>
-            <Th>Division</Th>
-            <Th>District</Th>
-            <Th>Upazila</Th>
-            <Th>Role</Th>
-            <Th>Change Role</Th>
-            <Th>Delete</Th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((u) => (
-            <tr key={u._id}>
-              <Td>
-                <Link to={`/journalist/${u._id}/videos`}>{u.name}</Link>
-              </Td>
-              <Td>{u.email}</Td>
-              <Td>{u.divisionId?.name || "—"}</Td>
-              <Td>{u.districtId?.name || "—"}</Td>
-              <Td>{u.upazilaId?.name || "—"}</Td>
-              <Td>{u.role}</Td>
-              <Td>
-                <RoleSelect
-                  value={u.role}
-                  onChange={(e) => handleRoleChange(u._id, e.target.value)}
-                >
-                  <option value="journalist">Journalist</option>
-                  <option value="editor">Editor</option>
-                  <option value="admin">Admin</option>
-                </RoleSelect>
-              </Td>
-              <Td>
-                <DeleteButton onClick={() => handleDelete(u._id)}>❌</DeleteButton>
-              </Td>
-            </tr>
-          ))}
-        </tbody>
-      </StyledTable>
+      <OverFlowRapper>
+          <StyledTable>
+            <thead>
+              <tr>
+                <Th>Name</Th>
+                <Th>Email</Th>
+                <Th>Division</Th>
+                <Th>District</Th>
+                <Th>Upazila</Th>
+                <Th>Role</Th>
+                <Th>Change Role</Th>
+                <Th>Delete</Th>
+              </tr>
+            </thead>
+            <tbody>
+              {users.map((u) => (
+                <tr key={u._id}>
+                  <Td>
+                    <Link to={`/journalist/${u._id}/videos`}>{u.name}</Link>
+                  </Td>
+                  <Td>{u.email}</Td>
+                  <Td>{u.divisionId?.name || "—"}</Td>
+                  <Td>{u.districtId?.name || "—"}</Td>
+                  <Td>{u.upazilaId?.name || "—"}</Td>
+                  <Td>{u.role}</Td>
+                  <Td>
+                    <RoleSelect
+                      value={u.role}
+                      onChange={(e) => handleRoleChange(u._id, e.target.value)}
+                    >
+                      <option value="journalist">Journalist</option>
+                      <option value="editor">Editor</option>
+                      <option value="admin">Admin</option>
+                    </RoleSelect>
+                  </Td>
+                  <Td>
+                    <DeleteButton onClick={() => handleDelete(u._id)}>❌</DeleteButton>
+                  </Td>
+                </tr>
+              ))}
+            </tbody>
+          </StyledTable>
+      </OverFlowRapper>
+      
     </Container>
   );
 };
