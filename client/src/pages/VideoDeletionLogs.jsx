@@ -81,7 +81,6 @@ const VideoDeletionLogs = () => {
           <tbody>
             {logs.map((log) => (
               <tr key={log._id}>
-                {console.log(log)}
                 <Td>{log.deletedBy?.name || "N/A"}</Td>
                 <Td>{new Date(log.deletedAt).toLocaleString()}</Td>
                 <Td>{log.title || "N/A"}</Td>

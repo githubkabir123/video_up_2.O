@@ -104,7 +104,6 @@ const AdminPanel = () => {
       setDivisions(divRes.data);
       setDistricts(distRes.data);
       setUpazilas(upzRes.data);
-      console.log(divisions);
     } catch (err) {
       console.error("Admin panel load error:", err);
     }

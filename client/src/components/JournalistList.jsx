@@ -52,7 +52,6 @@ const JournalistList = ({ districtId }) => {
       try {
         const res = await API.get(`/users/district/${districtId}`);
         setJournalists(res.data);
-        // console.log(res.data);
       } catch (err) {
         console.error(err);
       }

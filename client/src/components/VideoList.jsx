@@ -116,14 +116,12 @@ const fetchMyVideos = async (districtId, upazilaId) => {
 
     const handleDelete = async (videoId) => {
       if (!window.confirm("Are you sure you want to delete this video?")) return;
-      console.log(token)
       try {
         await API.delete(`/videos/${videoId}` ,{
       headers: {
         Authorization: `Bearer ${token}`,
       },
     }).then((res)=>{
-      console.log(res);
       alert(res.data.message);
     });
         fetchMyVideos(districtId,upazilaId);
