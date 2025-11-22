@@ -230,8 +230,10 @@ const Navbar = () => {
             </MenuItem>
           </>
         )}
+        
+{/* || role === "journalist" */}
 
-        {(role === "editor" || role === "journalist") && (
+        {(role === "editor" ) && (
           <MenuItem>
             <StyledLink to="/videolist/" onClick={handleLinkClick}>
               Video List

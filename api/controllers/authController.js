@@ -10,32 +10,41 @@ exports.register = async (req, res) => {
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(400).json({ message: "Email already in use." });
-
+    
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     // Create the user
     let newUser;
-   if(!districtId){ 
-      newUser = new User({
+   if(!upazilaId){ 
+      newUser =  new User({
       name,
       email,
       passwordHash: hashedPassword,
       role,
-      divisionId,
-      districtId
+      divisionId: new mongoose.Types.ObjectId(divisionId),
+      districtId: new mongoose.Types.ObjectId(districtId)
     });
   }else{
-      newUser = new User({
+      newUser =  new User({
       name,
       email,
       passwordHash: hashedPassword,
       role,
-      divisionId,
-      districtId,
-      upazilaId
+      divisionId: new mongoose.Types.ObjectId(divisionId),
+      districtId: new mongoose.Types.ObjectId(districtId),
+      upazilaId : new mongoose.Types.ObjectId(upazilaId)
     });
     }
-    await newUser.save();
+    
+    try {
+  console.log("Saving user...");
+  await newUser.save();
+  console.log("User saved successfully!");
+  res.status(201).json({ message: "User registered successfully." });
+} catch (err) {
+  console.error("Registration error:", err);
+  res.status(500).json({ message: "Registration failed.", error: err });
+}
     res.status(201).json({ message: "User registered successfully." });
   } catch (err) {
     res.status(500).json({ message: "Registration failed.", error: err.message });

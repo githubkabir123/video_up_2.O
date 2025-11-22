@@ -11,7 +11,7 @@ const PrivateRoute = ({ children, roles = [] }) => {
   }
 
   if (roles.length > 0 && !roles.includes(userRole)) {
-    return <Navigate to="/dashboard" />;
+    return <Navigate to="/" />;
   }
 
   return children;

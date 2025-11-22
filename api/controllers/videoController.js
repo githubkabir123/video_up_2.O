@@ -96,7 +96,6 @@ const mongoose = require("mongoose");
 const { Types } = mongoose;
 
 exports.getVideosByDistrict = async (req, res) => {
-  console.log("Req from District");
   try {
     const districtId = req.params.districtId;
 
@@ -147,10 +146,8 @@ exports.getVideosByUpazila = async (req, res) => {
 
 // Delete video
 exports.deleteVideo = async (req, res) => {
-  // console.log("this is user",req.user)
   try {
     if (!req.user) {
-      // console.log("No User 401")
       return res.status(401).json({ message: "Unauthorized: No user info" });
     }
 
@@ -158,9 +155,6 @@ exports.deleteVideo = async (req, res) => {
     const user = req.user; // from auth middleware
 
     const video = await Video.findById(videoId);
-    console.log(req.params.id)
-    console.log(video)
-    if (!video) {console.log("Video Not found")};
     if (!video) return res.status(404).json({ message: "Video not found" });
 
     // Save deletion log
@@ -207,7 +201,6 @@ exports.downloadVideo = async (req, res) => {
 };
 
 exports.getFilteredVideos = async (req, res) => {
-  console.log("Req from Filter");
   const { districtId, upazilaId } = req.query;
 
   const query = {};
